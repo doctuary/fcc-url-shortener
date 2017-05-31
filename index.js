@@ -1,4 +1,5 @@
 var express = require('express');
+var urlParser = require('url');
 var app = express();
 
 //lets require/import the mongodb native drivers.
@@ -34,7 +35,8 @@ app.get('/', function(req, res) {
     res.send('This is a url shortening microservice. Try passing in <this url>/shrink/:originalUrl.');
 });
 app.get('/shrink/:originalUrl', function(req, res) {
-  res.send(req.params.originalUrl);
+  var protocol = urlParser.parse(req.params.originalUrl).protocol;
+  res.send(protocol);
 });
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
