@@ -35,8 +35,8 @@ app.get('/', function(req, res) {
     res.send('This is a url shortening microservice. Try passing in <this url>/shrink/:originalUrl.');
 });
 app.get('/shrink/:sourceUrl*', function(req, res) {
-  //var isUri = validUrl.isUri(req.params.sourceUrl);
-  res.send(req.params.sourceUrln);
+  var isUri = validUrl.isUri(req.params.sourceUrl);
+  res.send(isUri);
 });
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
