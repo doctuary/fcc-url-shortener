@@ -1,5 +1,6 @@
 var express = require('express');
 var urlParser = require('url');
+var validurl = require('valid-url');
 var app = express();
 
 //lets require/import the mongodb native drivers.
@@ -36,7 +37,8 @@ app.get('/', function(req, res) {
 });
 app.get('/shrink/:sourceUrl*', function(req, res) {
   var protocol = urlParser.parse(req.params.sourceUrl).protocol;
-  res.send(protocol);
+  var isUri = validurl.isUri(req.params.sourceUrl);
+  res.send(isUri);
 });
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
