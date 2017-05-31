@@ -31,7 +31,10 @@ var url = process.env.MONGODB_URI;
 app.set('port', (process.env.PORT || 5000));
 
 app.get('/', function(req, res) {    
-    res.send('this is the url shortener microservice');
+    res.send('This is a url shortening microservice. Try passing in <this url>/shrink/:originalUrl.');
+});
+app.get('/shrink/:originalUrl', function(req, res) {
+  res.send(req.params.originalUrl);
 });
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
