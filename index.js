@@ -1,5 +1,4 @@
 var express = require('express');
-var urlParser = require('url');
 var validUrl = require('valid-url');
 var app = express();
 
@@ -36,7 +35,6 @@ app.get('/', function(req, res) {
     res.send('This is a url shortening microservice. Try passing in <this url>/shrink/:originalUrl.');
 });
 app.get('/shrink/:sourceUrl*', function(req, res) {
-  var protocol = urlParser.parse(req.params.sourceUrl).protocol;
   var isUri = validUrl.isUri(req.params.sourceUrl);
   res.send(isUri);
 });
