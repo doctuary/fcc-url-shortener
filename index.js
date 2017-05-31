@@ -36,7 +36,7 @@ app.get('/', function(req, res) {
 });
 app.get('/shrink/:originalUrl', function(req, res) {
   //var protocol = urlParser.parse(req.params.originalUrl).protocol;
-  res.send(req.params.originalUrl);
+  res.send(req.originalUrl);
 });
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
