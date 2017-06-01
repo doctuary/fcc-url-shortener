@@ -38,13 +38,24 @@ app.get('/shrink/:sourceUrl(*)', function(req, res) {
   let sourceUrl = req.params.sourceUrl;
   let isUri = validUrl.isUri(sourceUrl);
   if (isUri) {
-    let shortId = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-    shortId = shortId.toString();
-    let map = {
-      longUrl: sourceUrl,
-      shortUrl: "http://" + req.host + "/" + shortId
-    }
-    res.send(map);    
+    MongoClient.connect(url, function(err, db) {
+      if(err) {
+          res.end('Failed trying to connect to database.');
+          return console.log('Unable to connect to the mongoDB server. Error:', err);
+      } else {
+          let urlMaps = db.collection('urlMaps');
+          let shortId = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+          shortId = shortId.toString();
+          let map = {
+            longUrl: sourceUrl,
+            shortUrl: "http://" + req.host + "/" + shortId
+          };
+          urlMaps.insert(map,function(){
+              db.close();
+              res.send(map);
+          });
+      }
+    });
   } else {
     res.send(sourceUrl + " is not a valid URL.")
   }
