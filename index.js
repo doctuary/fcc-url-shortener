@@ -42,7 +42,7 @@ app.get('/shrink/:sourceUrl(*)', function(req, res) {
     shortId = shortId.toString();
     let map = {
       longUrl: sourceUrl,
-      shortUrl: shortId
+      shortUrl: "http://" + req.host + "/" + shortId
     }
     res.send(map);    
   } else {
