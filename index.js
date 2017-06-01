@@ -35,8 +35,17 @@ app.get('/', function(req, res) {
     res.send('This is a url shortening microservice. Try passing in <this url>/shrink/:originalUrl.');
 });
 app.get('/shrink/:sourceUrl*', function(req, res) {
-  var isUri = validUrl.isUri(req.params.sourceUrl);
-  res.send(isUri);
+  let sourceUrl = req.params.sourceUrl;
+  let isUri = validUrl.isUri(sourceUrl);
+  if (isUri) {
+    let map = {
+      longUrl: sourceUrl,
+      shortUrl: String.toString(Math.random() * 1000);
+    }
+    res.send(map);    
+  } else {
+    res.send(sourceUrl + " is not a valid URL.")
+  }
 });
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
