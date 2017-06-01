@@ -39,10 +39,10 @@ app.get('/shrink/:sourceUrl(*)', function(req, res) {
   let isUri = validUrl.isUri(sourceUrl);
   if (isUri) {
     let shortId = Math.random() * 1000;
-    shortId = String.toString(shortId);
+    shortId = shortId.toString();
     let map = {
       longUrl: sourceUrl,
-      shortUrl: "1111"
+      shortUrl: shortId
     }
     res.send(map);    
   } else {
