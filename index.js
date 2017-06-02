@@ -60,6 +60,32 @@ app.get('/shrink/:sourceUrl(*)', function(req, res) {
     res.send(sourceUrl + " is not a valid URL.")
   }
 });
+app.get('/:shortId', function(req, res) {
+  let shortId = req.params.shortId;
+  MongoClient.connect(url, function(err, db) {
+    if(err) {
+      res.end('Failed trying to connect to database.');
+      return console.log('Unable to connect to the mongoDB server. Error:', err);
+    } else {
+      let shortUrl = "http://" + req.host + "/" + shortId;
+      let urlMaps = db.collection('urlMaps');
+      let longUrl = urlMaps.find({shortUrl: shortUrl}).toArray(function(err, docs) {
+        if (err) {
+          res.end('Failed to find longUrl for shortUrl: ' + shortUrl);
+          return console.log('read', err);
+        } else {
+          if (docs.length>0) {
+            db.close();
+            res.redirect(docs[0].longUrl);
+          } else {
+            db.close();
+            res.end('Found shortUrl, but no longUrl to go with it');
+          }
+        }
+      })
+    }
+  })
+});
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
